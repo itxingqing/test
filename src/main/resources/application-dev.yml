@@ -1,0 +1,93 @@
+# 数据源配置
+spring:
+    datasource:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driverClassName: com.mysql.cj.jdbc.Driver
+        druid:
+            # 主库数据源
+            master:
+                url: jdbc:mysql://10.1.8.57:3306/register?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+                username: license
+                password: lic001
+            # 从库数据源
+            slave:
+                # 从数据源开关/默认关闭
+                enabled: false
+                url: 
+                username: 
+                password: 
+            # 初始连接数
+            initialSize: 5
+            # 最小连接池数量
+            minIdle: 10
+            # 最大连接池数量
+            maxActive: 20
+            # 配置获取连接等待超时的时间
+            maxWait: 60000
+            # 配置连接超时时间
+            connectTimeout: 30000
+            # 配置网络超时时间
+            socketTimeout: 60000
+            # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+            timeBetweenEvictionRunsMillis: 60000
+            # 配置一个连接在池中最小生存的时间，单位是毫秒
+            minEvictableIdleTimeMillis: 300000
+            # 配置一个连接在池中最大生存的时间，单位是毫秒
+            maxEvictableIdleTimeMillis: 900000
+            # 配置检测连接是否有效
+            validationQuery: SELECT 1 FROM DUAL
+            testWhileIdle: true
+            testOnBorrow: false
+            testOnReturn: false
+            webStatFilter: 
+                enabled: true
+            statViewServlet:
+                enabled: true
+                # 设置白名单，不填则允许所有访问
+                allow:
+                url-pattern: /druid/*
+                # 控制台管理用户名和密码
+                login-username: ruoyi
+                login-password: 123456
+            filter:
+                stat:
+                    enabled: true
+                    # 慢SQL记录
+                    log-slow-sql: true
+                    slow-sql-millis: 1000
+                    merge-sql: true
+                wall:
+                    config:
+                        multi-statement-allow: true
+
+# 许可证服务配置
+license:
+    server:
+        # ==================== RSA私钥配置 ====================
+        # 用途：服务器签名许可证令牌
+        # 格式：Base64编码的PKCS8格式
+        # 生成：运行 KeyGenerator 工具生成（仅首次部署时）
+        # 长度：约1700个字符
+        # 安全：绝密，仅存在于服务器端，不要泄露
+        #
+        # 示例值已失效，请使用KeyGenerator生成真实密钥
+        private-key: ${LICENSE_SERVER_PRIVATE_KEY:MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCwkzHW0qsyzXYoRom2J3NXkJX/pUsooO+VVdKJZFFpaxqYtAhaW4M3crFxbehvgEi+C3tY0Y8znP25Vu1SMJJaSQ0GFInR0TTXEz1FDTCECWfkvII0j+r88TS3sEG+moWRgzAEmRulstat5Ezf+JFzDP/Je4N6v2N5IdofIFNHIpaP4nOcFtuqCT2Zwofs5FndsJgzpLypHPl6jODOKhle4t0ERhaP/DqCfX7C5lQVjkbjwBz6CePLX/VzMrCVpW4f/dCJhnnBaX45j90iJUnaehm9M0VaN4WhEpaJJbfIwochO4GHdOkiJWdgD4qtpzk6+PZyo7cUO1nBxS8DWPvJAgMBAAECggEAA4fIjPwEp5e2D2jBo3O3JFQOu7V0Aumc1gaI7BhRDGOI0kQfOqHucLMJWzQ7Bn0Gd05GzBLR4yf2EWOXNnfOz/alR67XcUDWkUpK2lDrhxL3vHoMZxKi5yXHdmNpcm8n0S38osrmOPI8xUNK9NtvxQtzKHXLaNk0xZzoqItT6Zh98PWT5cPxW/VXfWSNymK5iRm/paB4M+Ho9D5zF3jPadaXKNpX0LCJXpOjRrG/00r7wOFcfS4pUYNKsr7dq7BmOVyktg5JOnuQZAYvnKAb9dis2NT2OioFtSKC7nRYLOm5gA4E1SeXkhrGu6Ex5Hk4/kD7Y9HtkvTtKRj9GLzsgQKBgQDV9srLkD5Ss+UYdePxp+KiFymUZmlkM/zeAh7n/ZWMgcAoqLH8YuqSLicdEeRrjlWKOmVe/jum+9Uq4ON+eSy9/odITorJozL9+S886zBcfgjbONI+F5KtTFVq7nW+q7wuCV4z7Ljg4MM8DEtYSG9azmqy7ZJ3p8HAfuWbm1xgsQKBgQDTQ/CcQcyX1DSIoqf6T5YVlliAPoYTSvf1Ry68l0p2Va2c9Pnjyqn4NrRy0bHFKHB5OGh545U45t4K+KNiUwf59k/mU8uznV/QXloN61Z/cQcF02k47MM3tMDN5fsyodS1Wdz/4NrCTpnQ/KU58wjS3obHbu2tsztAsFEMQ3LSmQKBgH+n//SV+ekj9bKzW61pahklUqR8ubKUJfFbOI9XR6uOGlTn2VFovuU6bhG1BCB7ymNvVd3oNzT4mYU8qd5ic6RjwNkOK1YEbb8DtgBVngQBGk2ZSC7Np7CHk4r5/PwmwF6DLlYyjVd2ImWoPCfPB8kY0KYygimryDiOPXWqquHxAoGAKyAZQ6xi2TNmLeYWKBCK8IkqM7OPpuyMxTLspW60soc2021mfUtnetWf7DhF85sXqocLPKZqVZ07Aj5TC8UrQak4EipU0Kt1XZGFDIZXt9gYuOW4+vfJudtZ6C3kIyfJxeM8K7d4sGVfHLwV9khYKsNl+9v3BJgrpj7XrIswKzECgYBBiK0eZMJ3xWc3AfA38fGoOMvOPJbSlJqg2bI5KMQUIxaJvl0+2HfdG8WZCGrzB4Z+9zeVurY4QW/AFDNrw+ck+R+ZEho9OPeyg4Esx966u6s/tmvnmEpYrGwN4LKWm4RjsfvwB+44CxU4KQWtRmQQeMvObAY14Cds/xH/Q+x/Rg==}
+
+        # ==================== HKDF盐值配置 ====================
+        # 用途：增强密钥派生的安全性，防止彩虹表攻击
+        # 格式：Base64编码，64字节（88个Base64字符）
+        # 生成：运行 KeyGenerator 工具生成（仅首次部署时）
+        # 要求：必须是64字节，否则启动失败
+        # 安全：绝密，仅存在于服务器端，不要泄露
+        #
+        # 示例值已失效，请使用KeyGenerator生成真实盐值
+        hkdf-salt: ${LICENSE_SERVER_SALT:TouL0sj2bgZTrQkYte6RPbS2rY+nwvOI3mbBXCF3BE8O9OuIf5GZ+9NM676HsRsXCvl9VvHevvtpQ4JgkfImmg==}
+
+        # ==================== 使用说明 ====================
+        # 1. 首次部署时运行：mvn exec:java -Dexec.mainClass="com.yourcompany.license.util.KeyGenerator"
+        # 2. 复制输出的private-key和hkdf-salt到此文件
+        # 3. 生产环境推荐使用环境变量：
+        #    export LICENSE_SERVER_PRIVATE_KEY="真实私钥"
+        #    export LICENSE_SERVER_SALT="真实盐值"
+        # 4. 备份密钥到安全位置（密码管理器或加密存储）
+        # 5. 不要将包含真实密钥的配置文件提交到Git
